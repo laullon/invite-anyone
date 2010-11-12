@@ -76,6 +76,21 @@ function invite_anyone_get_invitations_by_invited_email( $email ) {
 	return $results;	
 }
 
+function invite_anyone_is_group_invitation() {
+    global $bp;
+    $email = urldecode($bp->action_variables[0]);
+    if ($bp->current_action == 'accept-invitation' && $email) {
+        $invites = invite_anyone_get_invitations_by_invited_email($email);
+        $invite = $invites[0];
+        $group_invitations = unserialize($invite->group_invitations);
+        if (is_array($group_invitations)) {
+            $group_invitation = $group_invitations[0];
+            return $group_invitation;
+        }
+    }
+    return false;
+}
+
 function invite_anyone_clear_sent_invite( $args ) {
 	global $wpdb, $bp;
 	
