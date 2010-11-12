@@ -130,8 +130,11 @@ add_action( 'wp', 'invite_anyone_opt_out_screen', 1 );
 
 function invite_anyone_register_screen_message() {
 	global $bp;
+        $email = urldecode( $bp->action_variables[0] );
+        $invites = invite_anyone_get_invitations_by_invited_email( $email );
+
 ?>
-	<?php if ( $bp->current_action == 'accept-invitation' && !$bp->action_variables[0] ) : ?>
+	<?php if ( $bp->current_action == 'accept-invitation' && count($invites)==0): ?>
 		<div id="message" class="error"><p><?php _e( "It looks like you're trying to accept an invitation to join the site, but some information is missing. Please try again by clicking on the link in the invitation email.", 'bp-invite-anyone' ) ?></p></div>
 	<?php endif; ?>
 
@@ -149,7 +152,6 @@ function invite_anyone_register_screen_message() {
 
 
 		<?php
-			$invites = invite_anyone_get_invitations_by_invited_email( $email );
 			$inviters = array();
 			foreach ( $invites as $invite ) {
 				if ( !in_array( $invite->inviter_id, $inviters ) )
