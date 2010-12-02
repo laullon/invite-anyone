@@ -69,7 +69,7 @@ function invite_anyone_get_invitations_by_inviter_id( $id, $sort_by = false, $or
 
 function invite_anyone_get_invitations_by_invited_email( $email ) {
 	global $wpdb, $bp;
-
+		
 	$sql = $wpdb->prepare( "SELECT * FROM {$bp->invite_anyone->table_name} WHERE email = %s AND is_hidden=0 AND is_joined=0", $email );
 
 	$results = $wpdb->get_results($sql);
